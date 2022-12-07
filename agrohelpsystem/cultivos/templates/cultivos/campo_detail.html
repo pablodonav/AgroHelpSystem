@@ -1,0 +1,64 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+    <div class="card card-detail-campo">
+        <div class="col">
+            <div class="row">
+                <div class="card-header headerTerrenoDetailList">
+                    <p class="h1 fw-bold">Terreno: {{ mis_terrenos_detallados.id }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-header headerTerrenoDetailList" style="text-align:center">
+                    <form action="{% url 'borrar_campo' mis_terrenos_detallados.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="w-80 btn btn-primary buttonStyle" type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <p><strong>Num Hectáreas: </strong>{{ mis_terrenos_detallados.num_ha }}</p>
+            </div>
+            <div class="row">
+                    {% for loc in localizacion %}
+                        {% if loc.campo.id == mis_terrenos_detallados.id %}
+                            <div class="col">
+                                <p><strong>País: </strong>{{ loc.pais }}</p>
+                            </div>
+                            <div class="col">
+                                <p><strong>Ciudad: </strong>{{ loc.ciudad }}</p>
+                            </div>
+                            <div class="col">
+                                <p><strong>Latitud: </strong>{{ loc.latitud }}</p>
+                            </div>
+                            <div class="col">
+                                <p><strong>Longitud: </strong>{{ loc.longitud }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+            </div>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-success table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id Cultivo</th>
+                                <th scope="col">Nombre Cultivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cultivo in mis_terrenos_detallados.cultivos_set.all %}
+                            <tr>
+                                <td>{{cultivo.id}}</td>
+                                <td>{{cultivo.nombre}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer footerTerrenoDetailList">
+                <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+.sidebar-nav {
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-pills .nav-item .nav-link:not(.active) {
+    background: white;
+    color:  #85c1e9 ;
+}
+
+.nav-pills .nav-item .nav-link {
+    background-color: #58d68d;
+    color: white;
+}
+
+
+.card-detail-campo {
+    margin: 0 auto;
+    float: none;
+    margin-bottom: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 3%;
+}
+
+.card-generic-campos{
+    margin: 0 auto;
+    float: none;
+    margin-bottom: 10px;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 3%;
+}
+
+.headerTerrenosList {
+    background-color:  #fef9e7 ;
+}
+
+.headerTerrenoDetailList {
+    background-color: #fef9e7;
+}
+
+.footerTerrenoDetailList {
+    background-color: white;
+}
+
+.table-responsive{
+    max-height:150px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.container_new_terreno {
+    position: relative;
+    left: 15%;
+}
+
+.buttonStyle{
+    background:  #85c1e9;
+    border-color:  #85c1e9;
+    color: white;
+}
+
+.box-import {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-import div {
+  width: 500px;
+  height: 300px;
+}
+
+

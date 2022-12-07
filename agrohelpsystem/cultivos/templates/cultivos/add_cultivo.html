@@ -1,0 +1,30 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+<div class="container container_new_terreno">
+    <main>
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Nuevo Cultivo</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-1">
+                    <div class="col-sm-3">
+                        {{ form.nombre }}
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="w-80 btn btn-primary buttonStyle" type="submit">Añadir</button>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <h4 class="mb-3">Nuevo Cultivo desde CSV</h4>
+                <div class="col-sm-6">
+                    <a  id="importCultivos" href="/cultivos/campos/importCultivo">Importar Cultivos</a>
+                </div>
+                <hr class="my-4">
+                <div class="col-sm-1">
+                    <a href="https://adnana.pythonanywhere.com/cultivos/">Back</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+{% endblock %}

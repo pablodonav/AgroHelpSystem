@@ -1,0 +1,35 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+<div class="container container_new_terreno">
+    <main>
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Añade la localizacion del nuevo campo</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-sm-3">
+                        <label for="pais" class="form-label">Pais:</label>
+                        {{ form.pais }}
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="ciudad" class="form-label">Ciudad:</label>
+                        {{ form.ciudad }}
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label" for="longitud">Longitud:</label>
+                        {{ form.longitud }}
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label" for="latitud">Latitud:</label>
+                        {{ form.latitud }}
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="w-100 btn btn-primary newBtn" type="submit">Asignar localizacion</button>
+                    </div>
+                </div>
+                <br>
+            </form>
+        </div>
+    </main>
+</div>
+{% endblock %}

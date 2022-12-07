@@ -1,0 +1,36 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+    <div class="card card-generic-campos">
+        <div class="card-header headerTerrenosList">
+            <p class="h1 fw-bold">Lista Terrenos</p>
+        </div>
+        <div class="card-body">
+            {% if mis_terrenos %}
+                <ul>
+                  {% for terreno in mis_terrenos %}
+                      <li>
+                        <a href="{{ terreno.get_absolute_url }}">Terreno {{ terreno.id }}</a>
+                      </li>
+                  {% endfor %}
+                </ul>
+            {% else %}
+                <p>Todavía no se ha registrado ningún terreno.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+          <div class="pagination">
+              <span class="page-links">
+                  {% if page_obj.has_previous %}
+                      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous - </a>
+                  {% endif %}
+                  <span class="page-current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                  </span>
+                  {% if page_obj.has_next %}
+                      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}"> - Next</a>
+                  {% endif %}
+              </span>
+          </div>
+        </div>
+    </div>
+{% endblock %}

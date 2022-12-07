@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="description" content="Agrohelpsystem Signin Template" />
+      <meta name="author" content="Pablo Doñate and Adnana Dragut" />
+      <title>Signin v1.0</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Add additional CSS in static file -->
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'cultivos/signin.css' %}">
+   </head>
+   <body class="text-center">
+      <main class="form-signin w-100 m-auto">
+         <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <img class="mb-4" src="https://i.imgur.com/TLlxmWr.png" alt="" width="72" height="57">
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+               Usuario y/o contraseña incorrecta.
+            </div>
+            {% endif %}
+            <div class="form-floating">
+               <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required>
+               <label for="inputUsername">Username</label>
+            </div>
+            <div class="form-floating">
+               <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+               <label for="inputPassword">Password</label>
+            </div>
+            <br>
+            <div>
+               <button id="signinButton" class="w-100 btn btn-lg" type="submit">Sign in</button>
+               <input type="hidden" name="next" value="{{ next }}" />
+            </div>
+         </form>
+         <br>
+         <form action="https://adnana.pythonanywhere.com/accounts/register">
+            <input id="registerButton" class="w-100 btn btn-lg" type="submit" name="register" value="Register" />
+         </form>
+         <br>
+         <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+      </main>
+   </body>
+</html>

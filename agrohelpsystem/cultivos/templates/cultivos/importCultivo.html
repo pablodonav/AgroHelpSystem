@@ -1,0 +1,16 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+<div class="box-import">
+    <div>
+        <form action="." enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <br/>
+            <br/>
+            <button class="w-80 btn btn-primary buttonStyle " type="submit">Upload</button>
+            <hr/>
+            <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

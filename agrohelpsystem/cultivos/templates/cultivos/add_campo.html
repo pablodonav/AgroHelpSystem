@@ -1,0 +1,30 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+<div class="container container_new_terreno">
+    <main>
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Nuevo Campo</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col">
+                        <label class="form-label" for="num_ha">Numero de hectáreas: </label>
+                        {{ form.num_ha }}
+                    </div>
+                    <input type="hidden" class="form-control" name="user" value="{{ user.get_id }}">
+                </div>
+                <div class="row g-3">
+                    <div class="col-2">
+                        <label for="cultivos" class="form-label">Cultivos: </label>
+                        <a class="related-widget-wrapper-link add-related" id="add_id_CULTIVOS" href="/cultivos/campos/addCultivo"
+                            title="Añadir otro cultivo"><img src="/static/admin/img/icon-addlink.svg" alt="Añadir"></a>
+                        {{ form.CULTIVOS }}
+                    </div>
+                </div>
+                <hr class="my-4">
+                <button class="w-100 btn btn-primary btn-lg newBtn" type="submit">Registrar nuevo campo</button>
+            </form>
+        </div>
+    </main>
+</div>
+{% endblock %}
