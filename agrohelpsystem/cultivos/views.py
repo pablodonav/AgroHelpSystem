@@ -1,3 +1,12 @@
+# ------------------------------------------------------------------------------------------------------
+# Created By  : Pablo Doñate y Adnana Dragut
+# Created Date: 02/12/2022
+# version ='1.0'
+# ------------------------------------------------------------------------------------------------------
+# File: views.py
+# ------------------------------------------------------------------------------------------------------
+""" Fichero que contiene las vistas de la app cultivos """
+# ------------------------------------------------------------------------------------------------------
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views import generic
@@ -6,6 +15,7 @@ from .forms import AddCultivo, AddCampo, AddLocalizacion, ImportCultivoForm
 import pandas as pd
 from django.views.generic.base import View
 
+#Función que permite redirigir a la plantilla para crear un cultivo
 @login_required(login_url='/accounts/login/')
 def NuevoCultivo(request):
     if request.method == "POST":
@@ -17,6 +27,7 @@ def NuevoCultivo(request):
     form = AddCultivo()
     return render(request, "cultivos/add_cultivo.html", {"form": form})
 
+#Función que permite redirigir a la plantilla para crear una localización
 @login_required(login_url='/accounts/login/')
 def NuevaLocalizacion(request, pk):
     if request.method == "POST":
@@ -29,6 +40,7 @@ def NuevaLocalizacion(request, pk):
     form = AddLocalizacion()
     return render(request, "cultivos/add_localizacion.html", {"form": form})
 
+#Función que permite redirigir a la plantilla para crear un nuevo campo
 @login_required(login_url='/accounts/login/')
 def NuevoCampo(request):
     if request.method == "POST":
@@ -43,6 +55,7 @@ def NuevoCampo(request):
     form = AddCampo()
     return render(request, "cultivos/add_campo.html", {"form": form})
 
+#Función que permite redirigir a la plantilla para borrar un campo
 @login_required(login_url='/accounts/login/')
 def BorrarCampo(request, pk):
     campo = Campo.objects.get(id = pk)
@@ -51,20 +64,24 @@ def BorrarCampo(request, pk):
         return redirect('/')
     return render(request, "/", {'form': campo})
 
+#Clase genérica que representa la lista con campos
 class TerrenoListView(generic.ListView):
     model = Campo
     context_object_name = 'mis_terrenos'
     template_name = 'cultivos/index.html'
     paginate_by = 3
 
+    """ Función que permite obtener el queryset con la lista de campos del usuario loggeado """
     def get_queryset(self):
         login_agricultor = Agricultor.objects.get(user = self.request.user)
         return Campo.objects.filter(login_agricultor = login_agricultor)
 
+#Clase detallada que representa los campos detallados
 class TerrenoDetailView(generic.DetailView):
     model = Campo
     context_object_name = 'mis_terrenos_detallados'
 
+    """ Función que permite añadir campos a la vista detallada """
     def get_context_data(self, *args, **kwargs):
         context = super(TerrenoDetailView, self).get_context_data(*args, **kwargs)
 
@@ -72,10 +89,13 @@ class TerrenoDetailView(generic.DetailView):
 
         return context
 
+#Clase que representa la vista para importar cultivos
 class ImportCultivosView(View):
+    """ Función que permite obtener la plantilla para importar cultivos """
     def get(self, request, *args, **kwargs):
         return render(request, "cultivos/import_cultivos.html", {"form": ImportCultivoForm()})
 
+    """ Función que permite añadir los cultivos a la base de datos """
     def post(self, request, *args, **kwargs):
         cultivos_file = request.FILES["cultivos_file"]
         data=pd.read_csv(cultivos_file,sep=';')
