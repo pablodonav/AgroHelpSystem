@@ -5,7 +5,7 @@
 # ------------------------------------------------------------------------------------------------------
 # File: admin.py
 # ------------------------------------------------------------------------------------------------------
-""" Fichero que contiene las clases para personalizar los módulos en la página del administrador """
+""" Fichero que contiene las clases para personalizar los modelos en la página del administrador """
 # ------------------------------------------------------------------------------------------------------
 
 from django.contrib import admin

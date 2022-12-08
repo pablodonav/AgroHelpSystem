@@ -1,12 +1,20 @@
+# ------------------------------------------------------------------------------------------------------
+# Created By  : Pablo Doñate y Adnana Dragut
+# Created Date: 02/12/2022
+# version ='1.0'
+# ------------------------------------------------------------------------------------------------------
+# File: models.py
+# ------------------------------------------------------------------------------------------------------
+""" Fichero que contiene los modelos necesarios para crear la base de datos """
+# ------------------------------------------------------------------------------------------------------
 from django.db import models
 from django.contrib.auth.admin import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 
-# Modelo de Localización.
+# Modelo que representa la tabla Localización.
 class Localizacion(models.Model):
-    "Modelo que representa la tabla localización"
     class Meta:
         db_table = 'LOCALIZACION'
         verbose_name_plural = 'Localizaciones'
@@ -17,23 +25,19 @@ class Localizacion(models.Model):
     ciudad = models.CharField(max_length=255, null=False)
     longitud = models.DecimalField(max_digits=10, decimal_places=3)
     latitud = models.DecimalField(max_digits=10, decimal_places=3)
-
     campo = models.OneToOneField('Campo', on_delete=models.CASCADE)
 
+    """ String que representa el objeto Localizacion """
     def __str__(self):
-        "String que representa el objeto Localizacion"
         return f'{self.id}'
 
+    """ String que representa el id del campo de la localización """
     def display_campo(self):
-        """
-        Creates a string for the Login. This is required to display login in Admin.
-        """
         return self.campo.id
     display_campo.short_description = 'idCampo'
 
-# Modelo de Agricultor.
+# Modelo que representa la tabla Agricultor.
 class Agricultor(models.Model):
-
     class Meta:
         verbose_name_plural = 'Agricultores'
 
@@ -41,26 +45,29 @@ class Agricultor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.CharField(max_length=255, null=True, blank=True)
 
+    """ String que representa el objeto Agricultor """
     def __str__(self):
         return self.user.username
 
+    """ Función que muestra si el agricultor es superusuario """
     def display_superuser(self):
         return self.user.is_superuser
     display_superuser.short_description = 'is_superuser'
 
+    """ Función que obtiene la contraseña del usuario agricultor """
     def display_password(self):
         return self.user.password
     display_password.short_description = 'password'
 
+# Función que permite crear un usuario Agricultor.
 @receiver(post_save, sender=User)
 def create_user_agricultor(sender, instance, created, **kwargs):
     if created:
         Agricultor.objects.create(user=instance)
     instance.agricultor.save()
 
-# Modelo de Cultivo.
+# Modelo que representa la tabla Cultivo.
 class Cultivo(models.Model):
-    "Modelo que representa la tabla cultivo"
     class Meta:
         db_table = 'CULTIVO'
 
@@ -68,8 +75,8 @@ class Cultivo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, null=False)
 
+    """ String que representa el objeto Cultivo """
     def __str__(self):
-        "String que representa el objeto Cultivo"
         return f'{self.id}'
 
 # Modelo de Campo.
