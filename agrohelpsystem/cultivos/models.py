@@ -79,9 +79,8 @@ class Cultivo(models.Model):
     def __str__(self):
         return f'{self.id}'
 
-# Modelo de Campo.
+# Modelo que representa la tabla Campo.
 class Campo(models.Model):
-    "Modelo que representa la tabla campo"
     class Meta:
         db_table = 'CAMPO'
 
@@ -89,23 +88,18 @@ class Campo(models.Model):
     id = models.AutoField(primary_key=True)
     num_ha = models.DecimalField(max_digits=10, decimal_places=3)
     login_agricultor = models.ForeignKey('Agricultor', on_delete=models.CASCADE, null=False)
-
     CULTIVOS = models.ManyToManyField('Cultivo')
 
-    def get_absolute_url(self):
-        return reverse('terreno-detail', args=[str(self.id)])
-
-    def cultivos_set(self):
-        return self.CULTIVOS
-
+    """ String que representa el objeto Campo """
     def __str__(self):
-        "String que representa el objeto Campo"
         return f'{self.id}'
 
+    """ Función que obtiene el agricultor propietario del Campo """
     def display_propietario(self):
         return self.login_agricultor
     display_propietario.short_description = 'propietario'
 
+    """ Función que obtiene todos los cultivos del Campo en string """
     def display_cultivos(self):
         cultivos = ""
         for c in self.CULTIVOS.all():
@@ -116,6 +110,15 @@ class Campo(models.Model):
         return cultivos
     display_cultivos.short_description = 'cultivos'
 
+    """ Función que obtiene la url asociado a un campo específico """
+    def get_absolute_url(self):
+        return reverse('terreno-detail', args=[str(self.id)])
+
+    """ Función que obtiene la variable cultivos de un campo """
+    def cultivos_set(self):
+        return self.CULTIVOS
+
+# Modelo que representa la información a almacenar del fichero csv.
 class CultivoBulkUpload(models.Model):
   date_uploaded = models.DateTimeField(auto_now=True)
   csv_file = models.FileField(upload_to='cultivo/bulkupload/')
