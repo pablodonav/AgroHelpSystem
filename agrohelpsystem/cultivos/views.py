@@ -51,12 +51,6 @@ def BorrarCampo(request, pk):
         return redirect('/')
     return render(request, "/", {'form': campo})
 
-class CultivosListView(generic.ListView):
-    model = Cultivo
-    context_object_name = 'mis_cultivos'
-    queryset = Cultivo.objects.all()
-    template_name = 'cultivos/add_campo.html'
-
 class TerrenoListView(generic.ListView):
     model = Campo
     context_object_name = 'mis_terrenos'
@@ -80,7 +74,7 @@ class TerrenoDetailView(generic.DetailView):
 
 class ImportCultivosView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "cultivos/importCultivo.html", {"form": ImportCultivoForm()})
+        return render(request, "cultivos/import_cultivos.html", {"form": ImportCultivoForm()})
 
     def post(self, request, *args, **kwargs):
         cultivos_file = request.FILES["cultivos_file"]

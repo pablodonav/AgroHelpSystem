@@ -8,6 +8,6 @@ urlpatterns = [
     path('campos/', views.NuevoCampo, name='campos'),
     path('campos/addCultivo/', views.NuevoCultivo, name='add-cultivo'),
     path('campos/addLocalizacion/<pk>/', views.NuevaLocalizacion, name='add-cultivo'),
-    path('campos/importCultivo/', login_required(views.ImportCultivosView.as_view()),  name='import-cultivo'),
+    path('campos/import_cultivos/', login_required(views.ImportCultivosView.as_view()),  name='import-cultivo'),
     path('terreno/<pk>/delete/', views.BorrarCampo, name='borrar_campo')
 ]

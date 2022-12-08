@@ -13,13 +13,17 @@
                     </div>
                     <input type="hidden" class="form-control" name="user" value="{{ user.get_id }}">
                 </div>
-                <div class="row g-3">
-                    <div class="col-2">
+                <div class="row g-5">
+                    <div class="col-1">
                         <label for="cultivos" class="form-label">Cultivos: </label>
+                    </div>
+                    <div class="col-4">
                         <a class="related-widget-wrapper-link add-related" id="add_id_CULTIVOS" href="/cultivos/campos/addCultivo"
                             title="Añadir otro cultivo"><img src="/static/admin/img/icon-addlink.svg" alt="Añadir"></a>
-                        {{ form.CULTIVOS }}
                     </div>
+                </div>
+                <div class="row g-9">
+                    {{ form.CULTIVOS }}
                 </div>
                 <hr class="my-4">
                 <button class="w-100 btn btn-primary btn-lg newBtn" type="submit">Registrar nuevo campo</button>

@@ -15,7 +15,7 @@ class AddCampo(forms.ModelForm):
     cult = Cultivo.objects.values_list('nombre', flat=True)
 
     num_ha = DecimalField(max_digits=10, decimal_places=3)
-    CULTIVOS = ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, required=True, queryset=cult, label='')
+    CULTIVOS = ModelMultipleChoiceField(widget=forms.SelectMultiple(), required=True, queryset=cult, label='')
 
     class Meta:
         model = Campo
