@@ -1,63 +1,164 @@
 {% extends "cultivos/base_generic.html" %}
 {% block content %}
     <div class="card card-detail-campo">
-        <div class="col">
-            <div class="row">
-                <div class="card-header headerTerrenoDetailList">
-                    <p class="h1 fw-bold">Terreno: {{ mis_terrenos_detallados.id }}</p>
+        {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="row">
+            <div class="card-header headerTerrenoDetailList">
+                <p class="h1 fw-bold">Terreno: {{ mis_campos_detallados.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div style="text-align:center">
+                <button form="verMapaForm" class="w-80 btn btn-primary buttonStyle" type="submit">Ver localización</button>
+                <button form="verCultivosForm" class="w-80 btn btn-primary buttonStyle" type="submit">Ver cultivos</button>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div style="text-align:center">
+                <form id="borrarForm" action="{% url 'borrar_campo' mis_campos_detallados.id %}" method="POST">{% csrf_token %}</form>
+                <form id="verMapaForm" action="{% url 'map' mis_campos_detallados.id %}" method="POST">{% csrf_token %}</form>
+                <form id="verCultivosForm" action="{% url 'chart' mis_campos_detallados.id %}" method="POST">{% csrf_token %}</form>
+                <form id="addCultivoToCampo" action="{% url 'add-cultivo-to-campo' mis_campos_detallados.id %}"></form>
+                <form id="cosecharForm" action="{% url 'cosechar_campo' mis_campos_detallados.id %}" method="POST">{% csrf_token %}</form>
+                <form id="ImportHistoricoCultivo" action="{% url 'import-historico-cultivo' mis_campos_detallados.id %}" method="GET"></form>
+            </div>
+        </div>
+        <div class="row">
+                {% for loc in localizacion %}
+                    {% if loc.campo.id == mis_campos_detallados.id %}
+                        <div class="col">
+                            <p><strong>Num Hectáreas: </strong>{{ mis_campos_detallados.num_ha }}</p>
+                        </div>
+                        <div class="col">
+                            <p><strong>País: </strong>{{ loc.pais }}</p>
+                        </div>
+                        <div class="col">
+                            <p><strong>Ciudad: </strong>{{ loc.ciudad }}</p>
+                        </div>
+                        <div class="col">
+                            <p></p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p><strong>Día: </strong>{{ weather.main.day }} - {{ weather.main.hour }}</p>
+            </div>
+            <div class="col-sm-3">
+                <p><strong>Temperatura: </strong>{{ weather.main.temp }}ºC</p>
+            </div>
+            <div class="col-sm-4">
+                <p><strong>Resumen: </strong>{{weather.weather.0.main}} - {{weather.weather.0.description}}</p>
+            </div>
+            <div class="col">
+                <p></p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <p><strong>Pronóstico de los próximos 5 días:</strong></p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-bordered table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Día</th>
+                            <th scope="col">Hora</th>
+                            <th scope="col">Resumen</th>
+                            <th scope="col">T(ºC)</th>
+                            <th scope="col">Precipitación (mm)</th>
+                            <th scope="col">Riego (mm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pronostico in forecast.list %}
+                        <tr>
+                            <td>{{pronostico.main.day}}</td>
+                            <td>{{pronostico.main.hour}}</td>
+                            <td>{{pronostico.weather.0.main}} - {{pronostico.weather.0.description}}</td>
+                            <td>{{pronostico.main.temp}}</td>
+                            <td>{{pronostico.rain}}</td>
+                            <td>{{pronostico.main.riego}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div style="text-align:center">
+        	    <button form="addCultivoToCampo" class="btn btn-primary buttonStyle" type="submit">Nuevo cultivo</button>
+        	    <button form="ImportHistoricoCultivo" class="btn btn-primary buttonStyle" type="submit">Importar histórico cultivo</button>
+                <button type="button" class="btn btn-primary buttonStyle" data-bs-toggle="modal" data-bs-target="#cosechar">Cosechar</button>
+                <button type="button" class="btn btn-primary buttonStyle" data-bs-toggle="modal" data-bs-target="#eliminarTerreno">Eliminar terreno</button>
+            </div>
+        </div>
+        <a href="https://adnana.pythonanywhere.com/cultivos/campos/"/>Back</a>
+    </div>
+
+    <!-- Modal - Eliminar terreno -->
+    <div class="modal fade" id="eliminarTerreno" tabindex="-1" aria-labelledby="eliminarTerrenoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="eliminarTerrenoLabel">Eliminar terreno</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    ¿Estás seguro que deseas eliminar el terreno?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button form="borrarForm" class="btn btn-outline-danger btn-sm" type="submit">Eliminar terreno</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="card-header headerTerrenoDetailList" style="text-align:center">
-                    <form action="{% url 'borrar_campo' mis_terrenos_detallados.id %}" method="POST">
-                        {% csrf_token %}
-                        <button class="w-80 btn btn-primary buttonStyle" type="submit">Delete</button>
-                    </form>
+        </div>
+    </div>
+
+    <!-- Modal - Cosechar -->
+    <div class="modal fade" id="cosechar" tabindex="-1" aria-labelledby="cosecharLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="cosecharLabel">Cosechar</h1>
+                    <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
                 </div>
-            </div>
-            <div class="row">
-                <p><strong>Num Hectáreas: </strong>{{ mis_terrenos_detallados.num_ha }}</p>
-            </div>
-            <div class="row">
-                    {% for loc in localizacion %}
-                        {% if loc.campo.id == mis_terrenos_detallados.id %}
-                            <div class="col">
-                                <p><strong>País: </strong>{{ loc.pais }}</p>
-                            </div>
-                            <div class="col">
-                                <p><strong>Ciudad: </strong>{{ loc.ciudad }}</p>
-                            </div>
-                            <div class="col">
-                                <p><strong>Latitud: </strong>{{ loc.latitud }}</p>
-                            </div>
-                            <div class="col">
-                                <p><strong>Longitud: </strong>{{ loc.longitud }}</p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-            </div>
-            <div class="container">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-success table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id Cultivo</th>
-                                <th scope="col">Nombre Cultivo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for cultivo in mis_terrenos_detallados.cultivos_set.all %}
-                            <tr>
-                                <td>{{cultivo.id}}</td>
-                                <td>{{cultivo.nombre}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="modal-body text-center">
+                    ¿Estás seguro que deseas cosechar el terreno?
                 </div>
-            </div>
-            <div class="card-footer footerTerrenoDetailList">
-                <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button form="cosecharForm" class="btn btn-outline-danger btn-sm" type="submit">Cosechar campo</button>
+                </div>
             </div>
         </div>
     </div>

@@ -3,27 +3,75 @@
 <div class="container container_new_terreno">
     <main>
         <div class="col-md-7 col-lg-8">
+            {% for msg in messages %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
             <h4 class="mb-3">Nuevo Cultivo</h4>
             <form method="post">
                 {% csrf_token %}
                 <div class="row g-1">
                     <div class="col-sm-3">
+                        <label class="form-label" for="nombre">Nombre: </label>
                         {{ form.nombre }}
                     </div>
+                </div>
+                <br>
+                <div class="row g-1">
+                    <div class="col-sm-3">
+                        <label class="form-label" for="precio_kg">Precio Kg: </label>
+                        {{ form.precio_kg }}
+                    </div>
+                </div>
+                <br>
+                <div class="row g-1">
+                    <div class="col-sm-3">
+                        <label class="form-label" for="riego_dia">Riego por Día: </label>
+                        {{ form.riego_dia }}
+                    </div>
+                </div>
+                <br>
+                <div class="row g-1">
+                    <div class="col-sm-3">
+                        <label class="form-label" for="kg_ha">Kilos por hectárea: </label>
+                        {{ form.kg_ha }}
+                    </div>
+                </div>
+                <br>
+                <div class="row g-1">
+                    <div class="col-sm-3">
+                        <label class="form-label" for="tipo">Tipo de Cultivo: </label>
+                        {{ form.tipo }}
+                    </div>
+                </div>
+                <br>
+                <div class="row g-1">
                     <div class="col-sm-3">
                         <button class="w-80 btn btn-primary buttonStyle" type="submit">Añadir</button>
                     </div>
                 </div>
-                <hr class="my-4">
+            </form>
+            <hr class="my-4">
+            <form method="get">
                 <h4 class="mb-3">Nuevo Cultivo desde CSV</h4>
                 <div class="col-sm-6">
-                    <a  id="import_cultivos" href="/cultivos/campos/import_cultivos">Importar Cultivos</a>
-                </div>
-                <hr class="my-4">
-                <div class="col-sm-1">
-                    <a href="https://adnana.pythonanywhere.com/cultivos/">Back</a>
+                    <a  id="import_cultivos" href="/cultivos/campos/{{ campo.id }}/import_cultivos">Importar Cultivos</a>
                 </div>
             </form>
+            <hr class="my-4">
+            <div class="col-sm-1">
+                <a href="https://adnana.pythonanywhere.com/cultivos/campo/{{ campo.id }}/addCultivoToCampo">Back</a>
+            </div>
         </div>
     </main>
 </div>

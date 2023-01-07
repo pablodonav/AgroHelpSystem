@@ -15,6 +15,34 @@
 }
 
 
+/********************************
+ *           INDEX              *
+ ********************************/
+ .card-kpi {
+     margin: 10px;
+     padding: 10px;
+     background:  #34495e;
+     height: 170px;
+ }
+
+.material-icons.arrow-up {
+    color:  #2ecc71;
+    font-size: 36px;
+}
+
+.material-icons.arrow-down {
+    color:   #e74c3c;
+    font-size: 36px;
+}
+
+.progress-hectareas{
+    background: linear-gradient(45deg, #b7950b,  #fcf3cf);
+}
+
+.progress-riego{
+    background: linear-gradient(45deg, #2874a6, #d6eaf8);
+}
+
 .card-detail-campo {
     margin: 0 auto;
     float: none;
@@ -22,6 +50,14 @@
     margin-left: 20%;
     margin-right: 20%;
     padding: 3%;
+}
+
+.card-mis-terrenos{
+    margin: 0 auto;
+    float: none;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 1%;
 }
 
 .card-generic-campos{
@@ -46,7 +82,7 @@
 }
 
 .table-responsive{
-    max-height:150px;
+    max-height:250px;
     margin-bottom: 20px;
     margin-top: 10px;
 }
@@ -72,5 +108,3 @@
   width: 500px;
   height: 300px;
 }
-
-

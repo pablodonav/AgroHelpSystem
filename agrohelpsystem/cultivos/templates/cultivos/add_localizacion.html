@@ -3,32 +3,71 @@
 <div class="container container_new_terreno">
     <main>
         <div class="col-md-7 col-lg-8">
+            {% for msg in messages %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
             <h4 class="mb-3">Añade la localizacion del nuevo campo</h4>
-            <form method="post">
+            <form name="getForm" action={% url 'add-localizacion' campo.id %} method="GET">
                 {% csrf_token %}
                 <div class="row g-3">
                     <div class="col-sm-3">
-                        <label for="pais" class="form-label">Pais:</label>
-                        {{ form.pais }}
-                    </div>
-                    <div class="col-sm-3">
-                        <label for="ciudad" class="form-label">Ciudad:</label>
-                        {{ form.ciudad }}
-                    </div>
-                    <div class="col-sm-3">
                         <label class="form-label" for="longitud">Longitud:</label>
-                        {{ form.longitud }}
+                        <input id="longitud" type="number" step="0.0001" value="{{ long }}" name="longitud" required>
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label" for="latitud">Latitud:</label>
-                        {{ form.latitud }}
+                        <input id="latitud" type="number" step="0.0001" value="{{ lat }}" name="latitud" required>
+                    </div>
+                </div>
+                <br>
+                <div class="col-sm-3">
+                        <input type="submit" value="Buscar coordenadas">
+                </div>
+                <br>
+            </form>
+            <form name="postForm" action={% url 'add-localizacion' campo.id %} method="POST">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-sm-3">
+                        <input id="submitPost" type="submit" value="Asignar localizacion">
                     </div>
                     <div class="col-sm-3">
-                        <button class="w-100 btn btn-primary newBtn" type="submit">Asignar localizacion</button>
+                        <input id="hiddenLongitud" type="hidden" value="{{ long }}" name="hiddenLongitud" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <input id="hiddenLatitud" type="hidden" value="{{ lat }}" name="hiddenLatitud" required>
                     </div>
                 </div>
                 <br>
             </form>
+            {{ map|safe }}
+            <script>
+                let form = document.querySelector('postForm');
+                let hiddenLatitud = document.querySelector('#hiddenLatitud');
+                let hiddenLongitud = document.querySelector('#hiddenLongitud');
+                let submitButton = document.querySelector('#submitPost');
+
+                let longitud = document.querySelector('#hiddenLongitud').value;
+                let latitud = document.querySelector('#hiddenLatitud').value;
+
+                hiddenLatitud.value = latitud;
+                hiddenLongitud.value = longitud;
+
+                submitButton.addEventListener('click', function() {
+                    form.submit();
+                });
+            </script>
         </div>
     </main>
 </div>

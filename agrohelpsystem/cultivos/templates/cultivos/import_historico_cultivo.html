@@ -1,0 +1,30 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+<div class="box-import">
+    {% for msg in messages %}
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div>
+        <form action="." enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <br/>
+            <br/>
+            <button class="w-80 btn btn-primary buttonStyle " type="submit">Upload</button>
+            <hr/>
+            <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

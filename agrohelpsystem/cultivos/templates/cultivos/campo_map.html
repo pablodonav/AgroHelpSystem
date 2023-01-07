@@ -1,7 +1,6 @@
 {% extends "cultivos/base_generic.html" %}
 {% block content %}
-<div class="box-import">
-    <div>
+    <div class="card card-detail-campo">
         {% for msg in messages %}
             {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -16,15 +15,16 @@
                 </div>
             {% endif %}
         {% endfor %}
-        <form action="." enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <br/>
-            <br/>
-            <button class="w-80 btn btn-primary buttonStyle " type="submit">Upload</button>
-            <hr/>
-            <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
-        </form>
+        <div class="row">
+            <div class="card-header headerTerrenoDetailList">
+                <p class="h1 fw-bold">Terreno: {{ id }}</p>
+            </div>
+        </div>
+        {{ map|safe }}
+        <div class="col">
+            <div class="card-footer footerTerrenoDetailList">
+                <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+            </div>
+        </div>
     </div>
-</div>
-{% endblock %}
+{% endblock content %}

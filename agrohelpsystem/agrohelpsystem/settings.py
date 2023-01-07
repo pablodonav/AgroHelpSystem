@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'cultivos.apps.CultivosConfig',
     'crispy_forms',
-    'captcha'
+    'captcha',
+    'mathfilters'
 ]
 
 RECAPTCHA_PUBLIC_KEY = '6LcgZU4jAAAAAK6m0UdPIRIIOLM5tcbcPr9EdS9W'

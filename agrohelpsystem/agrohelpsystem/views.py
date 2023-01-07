@@ -37,6 +37,7 @@ def signup(request):
                 agricultor.email = agricultorEmail
                 agricultor.save()
                 auth.login(request,user)
+                messages.success(request, 'El registro se ha llevado acabo de forma exitosa.')
                 return redirect('https://adnana.pythonanywhere.com/cultivos/')
             else:
                 messages.error(request, 'Different passwords have been entered')
@@ -46,7 +47,7 @@ def signup(request):
     else:
         return render(request,'registration/register.html')
 
-#Función que permite sollicitar el reseteo de la contraseña de un usuario
+#Función que permite solicitar el reseteo de la contraseña de un usuario
 def password_reset_request(request):
     if request.method == 'POST':
         password_reset_form = PasswordResetForm(request.POST)
@@ -91,6 +92,7 @@ def password_confirm_request(request, uidb64, token):
             if user_pwd1 == user_pwd2:
                 user.set_password(user_pwd1)
                 user.save()
+                messages.success(request, 'La contraseña se ha cambiado correctamente.')
                 return redirect ("/reset/done")
             else:
                 messages.error(request, 'Different passwords have been entered')

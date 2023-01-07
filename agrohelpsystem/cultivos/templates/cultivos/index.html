@@ -1,36 +1,128 @@
-{% extends "cultivos/base_generic.html" %}
-{% block content %}
-    <div class="card card-generic-campos">
-        <div class="card-header headerTerrenosList">
-            <p class="h1 fw-bold">Lista Terrenos</p>
-        </div>
-        <div class="card-body">
-            {% if mis_terrenos %}
-                <ul>
-                  {% for terreno in mis_terrenos %}
-                      <li>
-                        <a href="{{ terreno.get_absolute_url }}">Terreno {{ terreno.id }}</a>
-                      </li>
-                  {% endfor %}
-                </ul>
-            {% else %}
-                <p>Todavía no se ha registrado ningún terreno.</p>
+{% extends "cultivos/base_generic.html" %} {% block content %}
+<div class="container">
+    <div class="row">
+        {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             {% endif %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="col-md-6 col-xl-4">
+            <div class="card card-kpi">
+                <h6 class="my-2" style="color: white;"><strong >Hectáreas ocupadas</strong></h6>
+                <div class="progress m-t-30" style="height: 15px;">
+                    <div class="progress-bar-striped progress-hectareas" role="progressbar"
+                        style="width:{{ porcentaje_total_ha_ocupadas }}%" aria-valuenow="{{ porcentaje_total_ha_ocupadas }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="col-md-2 offset-md-2">
+                            <small class="justify-content-center d-flex position-absolute w-100"><strong>{{ porcentaje_total_ha_ocupadas }}%</strong></small>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="my-3" style="color: white;"><strong >Diferencia con año anterior</strong></h6>
+                <div class="row d-flex align-items-center">
+                    <div class="col mx-auto">
+                        <h3 class="d-flex justify-content-center">
+                            {% load mathfilters %}
+                            {% if diferencia_ha_ocupadas == 0 %}
+                                <div style="color: white;">No hay datos anteriores</div>
+                            {% elif diferencia_ha_ocupadas > 0 %}
+                                <span class="material-icons arrow-up"> arrow_upward </span>
+                                <div style="color: white;">{{diferencia_ha_ocupadas|abs}} ha</div>
+                            {% else %}
+                                <span class="material-icons arrow-down"> arrow_downward </span>
+                                <div style="color: white;">{{diferencia_ha_ocupadas|abs}} ha</div>
+                            {% endif %}
+                        </h3>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-footer">
-          <div class="pagination">
-              <span class="page-links">
-                  {% if page_obj.has_previous %}
-                      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous - </a>
-                  {% endif %}
-                  <span class="page-current">
-                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                  </span>
-                  {% if page_obj.has_next %}
-                      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}"> - Next</a>
-                  {% endif %}
-              </span>
-          </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card card-kpi">
+                <h6 class="my-2" style="color: white;"><strong >Producción estimada año actual</strong></h6>
+                <div class="row d-flex align-items-center">
+                    <div class="col mx-auto">
+                        <h3 class="d-flex justify-content-center">
+                            <div style="color: white; font-size: 20px">{{estimacion_produccion_actual}} Tn</div>
+                        </h3>
+                    </div>
+                </div>
+                <h6 class="my-2" style="color: white;"><strong >Diferencia con año anterior</strong></h6>
+                <div class="row d-flex align-items-end">
+                    <div class="col mx-auto">
+                        <h3 class="d-flex justify-content-center">
+                            {% load mathfilters %}
+                            {% if diferencia_ha_ocupadas == 0 %}
+                                <div style="color: white;">No hay datos anteriores</div>
+                            {% elif diferencia_produccion > 0 %}
+                                <span class="material-icons arrow-up"> arrow_upward </span>
+                                <div style="color: white;">{{diferencia_produccion|abs}} %</div>
+                            {% else %}
+                                <span class="material-icons arrow-down"> arrow_downward </span>
+                                <div style="color: white;">{{diferencia_produccion|abs}} %</div>
+                            {% endif %}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card card-kpi">
+                <h6 class="my-2" style="color: white;"><strong >Beneficio estimado año actual</strong></h6>
+                <div class="row d-flex align-items-center">
+                    <div class="col mx-auto">
+                        <h3 class="d-flex justify-content-center">
+                            <div style="color: white; font-size: 20px">{{estimacion_beneficio_actual}} €</div>
+                        </h3>
+                    </div>
+                </div>
+                <h6 class="my-2" style="color: white;"><strong >Diferencia con año anterior</strong></h6>
+                <div class="row d-flex align-items-center">
+                    <div class="col mx-auto">
+                        <h3 class="d-flex justify-content-center">
+                            {% load mathfilters %}
+                            {% if diferencia_ha_ocupadas == 0 %}
+                                <div style="color: white;">No hay datos anteriores</div>
+                            {% elif diferencia_beneficio > 0 %}
+                                <span class="material-icons arrow-up"> arrow_upward </span>
+                                <div style="color: white;">{{diferencia_beneficio|abs}} %</div>
+                            {% else %}
+                                <span class="material-icons arrow-down"> arrow_downward </span>
+                                <div style="color: white;">{{diferencia_beneficio|abs}} %</div>
+                            {% endif %}
+                        </h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Producción/Año</h3>
+                </div>
+                <div class="card-block">
+                    <div class="ChartShadow" style="height:350px">
+                        {% if plot_div != None %}
+                            {% autoescape off %}
+                                {{ plot_div }}
+                            {% endautoescape %}
+                        {% else %}
+                            <h5><strong>¡No hay datos históricos necesarios para la representación de los cultivos en el gráfico!</strong></h5>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

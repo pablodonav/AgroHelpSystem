@@ -3,30 +3,51 @@
 <div class="container container_new_terreno">
     <main>
         <div class="col-md-7 col-lg-8">
+            {% for msg in messages %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
             <h4 class="mb-3">Nuevo Campo</h4>
             <form method="post">
                 {% csrf_token %}
                 <div class="row g-3">
                     <div class="col">
-                        <label class="form-label" for="num_ha">Numero de hectáreas: </label>
+                        <label class="form-label" for="num_ha">Número de hectáreas: </label>
                         {{ form.num_ha }}
                     </div>
                     <input type="hidden" class="form-control" name="user" value="{{ user.get_id }}">
                 </div>
-                <div class="row g-5">
-                    <div class="col-1">
-                        <label for="cultivos" class="form-label">Cultivos: </label>
-                    </div>
-                    <div class="col-4">
-                        <a class="related-widget-wrapper-link add-related" id="add_id_CULTIVOS" href="/cultivos/campos/addCultivo"
-                            title="Añadir otro cultivo"><img src="/static/admin/img/icon-addlink.svg" alt="Añadir"></a>
+                <br>
+                <div class="row g-3">
+                    <div class="col">
+                        <label class="form-label" for="volumen_agua_disp">Volúmen de agua disponible(l): </label>
+                        {{ form.volumen_agua_disp }}
                     </div>
                 </div>
-                <div class="row g-9">
-                    {{ form.CULTIVOS }}
+                <br>
+                <div class="row g-3">
+                    <div class="col">
+                        <label class="form-label" for="tipo_riego">Tipo de riego: </label>
+                        {{ form.tipo_riego }}
+                    </div>
                 </div>
+                <br>
                 <hr class="my-4">
                 <button class="w-100 btn btn-primary btn-lg newBtn" type="submit">Registrar nuevo campo</button>
+                <hr class="my-4">
+                <div class="col-sm-1">
+                    <a href="https://adnana.pythonanywhere.com/cultivos/campos/">Back</a>
+                </div>
             </form>
         </div>
     </main>

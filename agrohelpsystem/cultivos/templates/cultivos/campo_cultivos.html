@@ -1,0 +1,16 @@
+{% extends "cultivos/base_generic.html" %}
+{% block content %}
+    <div class="card card-detail-campo">
+        <div class="row">
+            <div class="card-header headerTerrenoDetailList">
+                <p class="h1 fw-bold">Terreno: {{ id }}</p>
+            </div>
+        </div>
+        {{ chart|safe }}
+        <div class="col">
+            <div class="card-footer footerTerrenoDetailList">
+                <a href="{{request.META.HTTP_REFERER|escape}}">Back</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
