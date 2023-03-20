@@ -1,7 +1,4 @@
 # AgroHelpSystem
 
-El enlace para acceder a la misma es el siguiente: https://adnana.pythonanywhere.com/
-<br>Las credenciales que se han creado para acceder a la misma son las siguientes:
-
-	Usuario: entrewebs
-	Password: rubenp2022
+Sistema de ayuda a la toma de decisiones (SATD) con el objetivo de ayudar a los agricultores a saber cuándo regar, consechar, sembrar, etc.
+Proyecto realizado con el conocido framework de Python denominado Django.
